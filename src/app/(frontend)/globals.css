@@ -1,0 +1,100 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+  Tasarim sistemi — "Sicak & Dogal" (adacayi yesili)
+  Master Brief Bolum 5.1. Renkler CSS degiskeni; Tailwind utility'leri
+  @theme inline ile bunlara baglanir. Sihirli renk sabiti KULLANMA.
+*/
+:root {
+  --radius: 0.625rem;
+
+  /* Marka paleti */
+  --sage-900: #2c3a31; /* en koyu — baslik/derinlik */
+  --sage-700: #4f6b58; /* BIRINCIL marka yesili */
+  --sage-500: #6e8c76; /* orta ton */
+  --sage-200: #c9d6cb; /* yumusak tint — yuzeyler */
+  --sage-50: #eef2ec; /* en acik yikama — bolum zeminleri */
+  --sand: #f7f4ed; /* sicak kirik beyaz — sayfa zemini */
+  --ink: #28302b; /* metin (saf siyah degil) */
+  --apricot: #e59a6c; /* TEK sicak vurgu — CTA/enerji */
+  --brass: #b08d57; /* premium/cihaz ince detay */
+
+  /* shadcn semantik token'lari -> markaya eslenmis */
+  --background: var(--sand);
+  --foreground: var(--ink);
+  --card: #ffffff;
+  --card-foreground: var(--ink);
+  --popover: #ffffff;
+  --popover-foreground: var(--ink);
+  --primary: var(--sage-700);
+  --primary-foreground: #f4f7f2;
+  --secondary: var(--sage-50);
+  --secondary-foreground: var(--sage-900);
+  --muted: var(--sage-50);
+  --muted-foreground: #55665b;
+  --accent: var(--apricot);
+  --accent-foreground: #3a2418; /* apricot uzeri koyu metin (WCAG AA) */
+  --destructive: #b3261e;
+  --border: var(--sage-200);
+  --input: var(--sage-200);
+  --ring: var(--sage-700);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Marka olcegi — dogrudan kullanim: bg-sage-700, text-ink, bg-apricot ... */
+  --color-sage-900: var(--sage-900);
+  --color-sage-700: var(--sage-700);
+  --color-sage-500: var(--sage-500);
+  --color-sage-200: var(--sage-200);
+  --color-sage-50: var(--sage-50);
+  --color-sand: var(--sand);
+  --color-ink: var(--ink);
+  --color-apricot: var(--apricot);
+  --color-brass: var(--brass);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body), system-ui, sans-serif;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display), Georgia, serif;
+  }
+}
