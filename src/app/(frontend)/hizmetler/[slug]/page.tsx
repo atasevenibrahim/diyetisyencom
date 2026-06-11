@@ -10,6 +10,8 @@ import { RichText } from '@/components/site/RichText'
 import { CtaBand } from '@/components/site/CtaBand'
 import { Button } from '@/components/ui/button'
 
+export const revalidate = 300
+
 type Params = { params: Promise<{ slug: string }> }
 
 export async function generateStaticParams() {

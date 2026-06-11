@@ -8,6 +8,8 @@ import { PageHeader } from '@/components/site/PageHeader'
 import { PackageCard } from '@/components/site/PackageCard'
 import { CtaBand } from '@/components/site/CtaBand'
 
+export const revalidate = 300
+
 export const metadata: Metadata = {
   title: 'Paketler & Fiyatlar',
   description:

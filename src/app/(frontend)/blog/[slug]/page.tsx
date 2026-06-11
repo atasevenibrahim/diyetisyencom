@@ -12,6 +12,8 @@ import { Section } from '@/components/site/Section'
 import { RichText } from '@/components/site/RichText'
 import { JsonLd } from '@/components/site/JsonLd'
 
+export const revalidate = 300
+
 type Params = { params: Promise<{ slug: string }> }
 
 export async function generateStaticParams() {

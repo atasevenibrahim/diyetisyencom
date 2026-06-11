@@ -6,6 +6,8 @@ import { Section } from '@/components/site/Section'
 import { PageHeader } from '@/components/site/PageHeader'
 import { BlogCard } from '@/components/site/BlogCard'
 
+export const revalidate = 300
+
 export const metadata: Metadata = {
   title: 'Blog',
   description:

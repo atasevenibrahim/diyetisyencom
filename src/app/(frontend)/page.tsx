@@ -15,6 +15,8 @@ import { Hero } from '@/components/home/Hero'
 import { ProcessTimeline } from '@/components/home/ProcessTimeline'
 import { SITE_NAME, SITE_URL } from '@/lib/site'
 
+export const revalidate = 300
+
 export default async function HomePage() {
   const [services, packages, testimonials, faqs, settings] = await Promise.all([
     getServices(),

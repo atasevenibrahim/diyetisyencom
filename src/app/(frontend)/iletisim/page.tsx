@@ -9,6 +9,8 @@ import { PageHeader } from '@/components/site/PageHeader'
 import { ContactForm } from '@/components/site/ContactForm'
 import { JsonLd } from '@/components/site/JsonLd'
 
+export const revalidate = 300
+
 export const metadata: Metadata = {
   title: 'İletişim',
   description:

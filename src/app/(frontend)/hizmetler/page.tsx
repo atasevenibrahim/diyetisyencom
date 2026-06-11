@@ -7,6 +7,8 @@ import { PageHeader } from '@/components/site/PageHeader'
 import { ServiceCard } from '@/components/site/ServiceCard'
 import { CtaBand } from '@/components/site/CtaBand'
 
+export const revalidate = 300
+
 export const metadata: Metadata = {
   title: 'Hizmetler',
   description:

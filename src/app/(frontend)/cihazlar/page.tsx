@@ -7,6 +7,8 @@ import { PageHeader } from '@/components/site/PageHeader'
 import { DeviceCard } from '@/components/site/DeviceCard'
 import { CtaBand } from '@/components/site/CtaBand'
 
+export const revalidate = 300
+
 export const metadata: Metadata = {
   title: 'Cihazlar',
   description:
