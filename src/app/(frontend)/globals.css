@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@plugin '@tailwindcss/typography';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -96,5 +97,18 @@
   h3,
   h4 {
     font-family: var(--font-display), Georgia, serif;
+  }
+
+  /* richText (prose) renkleri marka token'larina baglanir */
+  .prose {
+    --tw-prose-body: var(--ink);
+    --tw-prose-headings: var(--sage-900);
+    --tw-prose-links: var(--sage-700);
+    --tw-prose-bold: var(--sage-900);
+    --tw-prose-bullets: var(--sage-500);
+    --tw-prose-counters: var(--sage-500);
+    --tw-prose-quotes: var(--sage-700);
+    --tw-prose-quote-borders: var(--sage-200);
+    --tw-prose-hr: var(--sage-200);
   }
 }

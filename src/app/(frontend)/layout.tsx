@@ -3,6 +3,8 @@ import type { Metadata } from 'next'
 import { Fraunces, Hanken_Grotesk } from 'next/font/google'
 
 import './globals.css'
+import { Navbar } from '@/components/site/Navbar'
+import { Footer } from '@/components/site/Footer'
 
 // Display: karakterli, sicak yuz. Body: temiz humanist sans.
 // latin-ext, Turkce gliflerini (I, i, s, g, c, o, u) kapsar.
@@ -32,7 +34,11 @@ export default function RootLayout(props: { children: React.ReactNode }) {
 
   return (
     <html lang="tr" className={`${fraunces.variable} ${hankenGrotesk.variable}`}>
-      <body>{children}</body>
+      <body className="flex min-h-dvh flex-col">
+        <Navbar />
+        <main className="flex-1">{children}</main>
+        <Footer />
+      </body>
     </html>
   )
 }
