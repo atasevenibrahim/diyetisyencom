@@ -14,7 +14,11 @@ import { BlogPosts } from './collections/BlogPosts'
 import { Testimonials } from './collections/Testimonials'
 import { Faqs } from './collections/Faqs'
 import { ContactSubmissions } from './collections/ContactSubmissions'
+import { AppointmentTypes } from './collections/AppointmentTypes'
+import { ScheduleExceptions } from './collections/ScheduleExceptions'
+import { Appointments } from './collections/Appointments'
 import { SiteSettings } from './globals/SiteSettings'
+import { Availability } from './globals/Availability'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -36,8 +40,11 @@ export default buildConfig({
     Testimonials,
     Faqs,
     ContactSubmissions,
+    AppointmentTypes,
+    ScheduleExceptions,
+    Appointments,
   ],
-  globals: [SiteSettings],
+  globals: [SiteSettings, Availability],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

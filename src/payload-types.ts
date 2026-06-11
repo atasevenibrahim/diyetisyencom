@@ -76,6 +76,9 @@ export interface Config {
     testimonials: Testimonial;
     faqs: Faq;
     'contact-submissions': ContactSubmission;
+    'appointment-types': AppointmentType;
+    'schedule-exceptions': ScheduleException;
+    appointments: Appointment;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -92,6 +95,9 @@ export interface Config {
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     faqs: FaqsSelect<false> | FaqsSelect<true>;
     'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
+    'appointment-types': AppointmentTypesSelect<false> | AppointmentTypesSelect<true>;
+    'schedule-exceptions': ScheduleExceptionsSelect<false> | ScheduleExceptionsSelect<true>;
+    appointments: AppointmentsSelect<false> | AppointmentsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -103,9 +109,11 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     'site-settings': SiteSetting;
+    availability: Availability;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    availability: AvailabilitySelect<false> | AvailabilitySelect<true>;
   };
   locale: null;
   widgets: {
@@ -431,6 +439,79 @@ export interface ContactSubmission {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "appointment-types".
+ */
+export interface AppointmentType {
+  id: number;
+  name: string;
+  /**
+   * URL parcasi. Bos birakilirsa baslitan otomatik uretilir.
+   */
+  slug: string;
+  durationMin: number;
+  channel: 'online' | 'in_person' | 'both';
+  description?: string | null;
+  active?: boolean | null;
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "schedule-exceptions".
+ */
+export interface ScheduleException {
+  id: number;
+  /**
+   * Örn. 2026-07-15
+   */
+  date: string;
+  type: 'closed' | 'custom';
+  /**
+   * Örn. 10:00
+   */
+  start?: string | null;
+  /**
+   * Örn. 14:00
+   */
+  end?: string | null;
+  note?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "appointments".
+ */
+export interface Appointment {
+  id: number;
+  slotKey?: string | null;
+  date: string;
+  startTime: string;
+  durationMin: number;
+  status: 'pending' | 'confirmed' | 'cancelled' | 'rescheduled' | 'completed' | 'no_show';
+  appointmentType: number | AppointmentType;
+  channel: 'online' | 'in_person';
+  service?: (number | null) | Service;
+  clientName: string;
+  phone: string;
+  email?: string | null;
+  notes?: string | null;
+  kvkkConsent: boolean;
+  /**
+   * Faz 3 (otomatik).
+   */
+  reminderSent?: boolean | null;
+  paymentStatus?: ('none' | 'pending' | 'paid' | 'refunded') | null;
+  /**
+   * Faz 6.
+   */
+  paymentProvider?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -488,6 +569,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'contact-submissions';
         value: number | ContactSubmission;
+      } | null)
+    | ({
+        relationTo: 'appointment-types';
+        value: number | AppointmentType;
+      } | null)
+    | ({
+        relationTo: 'schedule-exceptions';
+        value: number | ScheduleException;
+      } | null)
+    | ({
+        relationTo: 'appointments';
+        value: number | Appointment;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -703,6 +796,58 @@ export interface ContactSubmissionsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "appointment-types_select".
+ */
+export interface AppointmentTypesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  durationMin?: T;
+  channel?: T;
+  description?: T;
+  active?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "schedule-exceptions_select".
+ */
+export interface ScheduleExceptionsSelect<T extends boolean = true> {
+  date?: T;
+  type?: T;
+  start?: T;
+  end?: T;
+  note?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "appointments_select".
+ */
+export interface AppointmentsSelect<T extends boolean = true> {
+  slotKey?: T;
+  date?: T;
+  startTime?: T;
+  durationMin?: T;
+  status?: T;
+  appointmentType?: T;
+  channel?: T;
+  service?: T;
+  clientName?: T;
+  phone?: T;
+  email?: T;
+  notes?: T;
+  kvkkConsent?: T;
+  reminderSent?: T;
+  paymentStatus?: T;
+  paymentProvider?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -785,6 +930,34 @@ export interface SiteSetting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "availability".
+ */
+export interface Availability {
+  id: number;
+  /**
+   * Her gün için açık/kapalı ve saat aralığı.
+   */
+  weekly?:
+    | {
+        day: 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
+        enabled?: boolean | null;
+        start?: string | null;
+        end?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  slotIntervalMin?: number | null;
+  bufferMin?: number | null;
+  minLeadHours?: number | null;
+  maxAdvanceDays?: number | null;
+  lateToleranceMin?: number | null;
+  rescheduleStandardDays?: number | null;
+  rescheduleQuarterlyDays?: number | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
@@ -820,6 +993,31 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         url?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "availability_select".
+ */
+export interface AvailabilitySelect<T extends boolean = true> {
+  weekly?:
+    | T
+    | {
+        day?: T;
+        enabled?: T;
+        start?: T;
+        end?: T;
+        id?: T;
+      };
+  slotIntervalMin?: T;
+  bufferMin?: T;
+  minLeadHours?: T;
+  maxAdvanceDays?: T;
+  lateToleranceMin?: T;
+  rescheduleStandardDays?: T;
+  rescheduleQuarterlyDays?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

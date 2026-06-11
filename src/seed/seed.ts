@@ -31,7 +31,7 @@ const lexical = (paragraphs: string[]) => ({
 
 async function upsertBySlug(
   payload: Payload,
-  collection: 'services' | 'packages' | 'devices' | 'blog-posts',
+  collection: 'services' | 'packages' | 'devices' | 'blog-posts' | 'appointment-types',
   slug: string,
   data: Record<string, unknown>,
 ) {
@@ -437,6 +437,57 @@ export async function runSeed(payload: Payload): Promise<Record<string, number>>
     publishedAt: new Date().toISOString(),
   })
 
+  // ---- appointmentTypes ----
+  const appointmentTypes = [
+    {
+      slug: 'ilk-gorusme',
+      name: 'İlk Görüşme',
+      durationMin: 40,
+      channel: 'both',
+      description: 'Detaylı değerlendirme ve kişiye özel planın oluşturulduğu ilk görüşme.',
+      order: 1,
+    },
+    {
+      slug: 'kontrol-gorusmesi',
+      name: 'Kontrol Görüşmesi',
+      durationMin: 30,
+      channel: 'both',
+      description: 'Takip ve program güncellemesi için kontrol görüşmesi.',
+      order: 2,
+    },
+    {
+      slug: 'vucut-analizi-randevu',
+      name: 'Vücut Analizi',
+      durationMin: 30,
+      channel: 'in_person',
+      description: 'Detaylı vücut kompozisyonu analizi ve yorumlaması.',
+      order: 3,
+    },
+  ]
+  for (const { slug, ...rest } of appointmentTypes) {
+    await upsertBySlug(payload, 'appointment-types', slug, { ...rest, active: true })
+  }
+
+  // ---- availability ----
+  await payload.updateGlobal({
+    slug: 'availability',
+    data: {
+      weekly: (['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] as const).map((day) => ({
+        day,
+        enabled: true,
+        start: '09:00',
+        end: '19:00',
+      })),
+      slotIntervalMin: 30,
+      bufferMin: 0,
+      minLeadHours: 3,
+      maxAdvanceDays: 60,
+      lateToleranceMin: 5,
+      rescheduleStandardDays: 7,
+      rescheduleQuarterlyDays: 14,
+    },
+  })
+
   const counts: Record<string, number> = {}
   for (const c of [
     'services',
@@ -445,6 +496,7 @@ export async function runSeed(payload: Payload): Promise<Record<string, number>>
     'testimonials',
     'faqs',
     'blog-posts',
+    'appointment-types',
   ] as const) {
     counts[c] = (await payload.count({ collection: c })).totalDocs
   }

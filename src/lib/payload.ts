@@ -107,3 +107,44 @@ export const getBlogPostBySlug = cache(async (slug: string) => {
   })
   return docs[0] ?? null
 })
+
+// --- Randevu ---
+
+export const getActiveAppointmentTypes = cache(async () => {
+  const payload = await getPayloadClient()
+  const { docs } = await payload.find({
+    collection: 'appointment-types',
+    where: { active: { equals: true } },
+    sort: 'order',
+    limit: 100,
+  })
+  return docs
+})
+
+export const getAvailability = cache(async () => {
+  const payload = await getPayloadClient()
+  return payload.findGlobal({ slug: 'availability' })
+})
+
+export const getScheduleExceptions = cache(async () => {
+  const payload = await getPayloadClient()
+  const { docs } = await payload.find({ collection: 'schedule-exceptions', limit: 500 })
+  return docs
+})
+
+// Belirli bir gündeki aktif (slotu işgal eden) randevular. Cache'lenmez (sık değişir).
+export async function getActiveAppointmentsForDate(date: string) {
+  const payload = await getPayloadClient()
+  const { docs } = await payload.find({
+    collection: 'appointments',
+    where: {
+      and: [
+        { date: { equals: date } },
+        { status: { in: ['pending', 'confirmed', 'completed'] } },
+      ],
+    },
+    limit: 500,
+    depth: 0,
+  })
+  return docs
+}
