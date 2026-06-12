@@ -110,10 +110,12 @@ export interface Config {
   globals: {
     'site-settings': SiteSetting;
     availability: Availability;
+    notifications: Notification;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     availability: AvailabilitySelect<false> | AvailabilitySelect<true>;
+    notifications: NotificationsSelect<false> | NotificationsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -486,6 +488,7 @@ export interface ScheduleException {
 export interface Appointment {
   id: number;
   slotKey?: string | null;
+  cancelToken?: string | null;
   date: string;
   startTime: string;
   durationMin: number;
@@ -828,6 +831,7 @@ export interface ScheduleExceptionsSelect<T extends boolean = true> {
  */
 export interface AppointmentsSelect<T extends boolean = true> {
   slotKey?: T;
+  cancelToken?: T;
   date?: T;
   startTime?: T;
   durationMin?: T;
@@ -958,6 +962,25 @@ export interface Availability {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notifications".
+ */
+export interface Notification {
+  id: number;
+  senderName?: string | null;
+  senderEmail?: string | null;
+  /**
+   * Boşsa site iletişim e-postası kullanılır.
+   */
+  adminEmail?: string | null;
+  smsHeader?: string | null;
+  emailEvents?: ('requested' | 'confirmed' | 'cancelled' | 'rescheduled' | 'reminder' | 'admin_new')[] | null;
+  smsEvents?: ('requested' | 'confirmed' | 'cancelled' | 'rescheduled' | 'reminder' | 'admin_new')[] | null;
+  whatsappEvents?: ('requested' | 'confirmed' | 'cancelled' | 'rescheduled' | 'reminder' | 'admin_new')[] | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
@@ -1018,6 +1041,22 @@ export interface AvailabilitySelect<T extends boolean = true> {
   lateToleranceMin?: T;
   rescheduleStandardDays?: T;
   rescheduleQuarterlyDays?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notifications_select".
+ */
+export interface NotificationsSelect<T extends boolean = true> {
+  senderName?: T;
+  senderEmail?: T;
+  adminEmail?: T;
+  smsHeader?: T;
+  emailEvents?: T;
+  smsEvents?: T;
+  whatsappEvents?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

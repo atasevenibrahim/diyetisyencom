@@ -26,17 +26,40 @@ export const Appointments: CollectionConfig = {
     // Çift rezervasyon kilidi: aktif randevular için slotKey = "date T startTime",
     // pasif (iptal/ertelendi/gelmedi) için null. slotKey alanı unique olduğundan
     // (Postgres çoklu NULL'a izin verir) aynı slota ikinci aktif kayıt DB'de reddedilir.
+    // Ayrıca self-servis için cancelToken (oluşturmada) üretilir.
     beforeChange: [
-      ({ data }) => {
+      ({ data, operation }) => {
         const active = ACTIVE_STATUSES.includes(data.status as string)
         data.slotKey = active && data.date && data.startTime ? `${data.date}T${data.startTime}` : null
+        if (operation === 'create' && !data.cancelToken) {
+          data.cancelToken = globalThis.crypto.randomUUID()
+        }
         return data
+      },
+    ],
+    // Bildirim olaylarını tetikle (e-posta/SMS). Hatalar randevu kaydını etkilemez.
+    afterChange: [
+      async ({ doc, previousDoc, operation, req }) => {
+        try {
+          const { notifyAppointmentChange } = await import('@/lib/notifications/appointments')
+          await notifyAppointmentChange({ payload: req.payload, doc, previousDoc, operation })
+        } catch (e) {
+          req.payload.logger.error({ msg: '[notify] afterChange hatası', err: e })
+        }
+        return doc
       },
     ],
   },
   fields: [
     {
       name: 'slotKey',
+      type: 'text',
+      unique: true,
+      index: true,
+      admin: { hidden: true },
+    },
+    {
+      name: 'cancelToken',
       type: 'text',
       unique: true,
       index: true,

@@ -20,6 +20,7 @@ import { ScheduleExceptions } from './collections/ScheduleExceptions'
 import { Appointments } from './collections/Appointments'
 import { SiteSettings } from './globals/SiteSettings'
 import { Availability } from './globals/Availability'
+import { Notifications } from './globals/Notifications'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -45,7 +46,7 @@ export default buildConfig({
     ScheduleExceptions,
     Appointments,
   ],
-  globals: [SiteSettings, Availability],
+  globals: [SiteSettings, Availability, Notifications],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

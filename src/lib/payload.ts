@@ -148,3 +148,14 @@ export async function getActiveAppointmentsForDate(date: string) {
   })
   return docs
 }
+
+export async function getAppointmentByToken(token: string) {
+  const payload = await getPayloadClient()
+  const { docs } = await payload.find({
+    collection: 'appointments',
+    where: { cancelToken: { equals: token } },
+    limit: 1,
+    depth: 1,
+  })
+  return docs[0] ?? null
+}

@@ -488,6 +488,18 @@ export async function runSeed(payload: Payload): Promise<Record<string, number>>
     },
   })
 
+  // ---- notifications ----
+  await payload.updateGlobal({
+    slug: 'notifications',
+    data: {
+      senderName: 'Uzm. Dyt. Özden Özgür Durukan',
+      senderEmail: 'randevu@ozdenozgurdurukan.com',
+      emailEvents: ['requested', 'confirmed', 'cancelled', 'rescheduled', 'reminder', 'admin_new'],
+      smsEvents: [],
+      whatsappEvents: [],
+    },
+  })
+
   const counts: Record<string, number> = {}
   for (const c of [
     'services',
