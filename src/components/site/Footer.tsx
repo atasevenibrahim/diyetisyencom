@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { AtSign, Clock, Leaf, MapPin, Phone } from 'lucide-react'
+import Image from 'next/image'
+import { AtSign, Clock, MapPin, Phone } from 'lucide-react'
 
 import { getSiteSettings } from '@/lib/payload'
 import { navLinks } from '@/lib/nav'
@@ -14,8 +15,8 @@ export async function Footer() {
       <Container className="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-2">
-            <span className="bg-sage-700 flex size-9 items-center justify-center rounded-full">
-              <Leaf className="size-5" />
+            <span className="bg-sand flex size-9 items-center justify-center rounded-full">
+              <Image src="/logo.png" alt="Özden Özgür Durukan logo" width={26} height={26} />
             </span>
             <span className="font-display text-lg font-semibold">Özden Özgür Durukan</span>
           </div>

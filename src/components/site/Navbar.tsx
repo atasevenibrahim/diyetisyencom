@@ -2,8 +2,9 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { Leaf, Menu, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 import { navLinks } from '@/lib/nav'
@@ -18,9 +19,14 @@ export function Navbar() {
     <header className="bg-sand/85 border-sage-200/70 sticky top-0 z-50 border-b backdrop-blur">
       <Container className="flex h-16 items-center justify-between gap-4">
         <Link href="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
-          <span className="bg-sage-700 flex size-9 items-center justify-center rounded-full text-primary-foreground">
-            <Leaf className="size-5" />
-          </span>
+          <Image
+            src="/logo.png"
+            alt="Özden Özgür Durukan logo"
+            width={36}
+            height={36}
+            priority
+            className="size-9"
+          />
           <span className="flex flex-col leading-tight">
             <span className="font-display text-sage-900 text-base font-semibold">
               Özden Özgür Durukan
